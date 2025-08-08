@@ -20,5 +20,7 @@ typedef struct gpio_t
 #define GPIO_C ((gpio_t*)GPIO_C_BASE)
 
 void gpio_init();
+void gpio_write_pin(gpio_t* port, uint8_t pin, uint8_t value);
+uint8_t gpio_read_pin(gpio_t* port, uint8_t pin);
 
 #endif
