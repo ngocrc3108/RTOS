@@ -2,6 +2,7 @@
 #include "gpio.h"
 
 #define SRAM_START_ADDRESS 0x20000000
+#define SRAM_SIZE 20 * 1024
 
 /* get symbol address (value) by &, the type here does not matter */
 extern void* __data_start_address;
@@ -12,7 +13,7 @@ static void Default_handler(void);
 static void Reset_handler() __attribute__((section (".reset_handler")));
 
 uint32_t vector_table[] __attribute__((section (".vector_table"))) = {
-    (0x20000000 + 20 * 1024),
+    (SRAM_START_ADDRESS + SRAM_SIZE),
     (uint32_t)(&Reset_handler),
     (uint32_t)(&Default_handler),
     (uint32_t)(&Default_handler),
