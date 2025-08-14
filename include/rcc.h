@@ -13,6 +13,7 @@ typedef struct {
     uint32_t APB1RSTR;
     uint32_t AHBENR;
     uint32_t APB2ENR;
+    uint32_t APB1ENR;
     uint32_t BDCR;
     uint32_t CSR;
 } rcc_t;
