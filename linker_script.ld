@@ -26,6 +26,8 @@ SECTIONS
     {
         __bss_start_address = .;
         *(.bss)
+        . = ALIGN(4);
+        __heap_start_address = .;
     } > RAM
     __bss_size = SIZEOF(.bss);
 }

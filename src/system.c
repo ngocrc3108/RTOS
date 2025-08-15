@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "gpio.h"
+#include "os.h"
 
 #define SRAM_START_ADDRESS 0x20000000
 #define SRAM_SIZE 20 * 1024
@@ -59,7 +60,7 @@ uint32_t vector_table[] __attribute__((section (".vector_table"))) = {
     (uint32_t)(&Default_handler),
     (uint32_t)(&Default_handler),
     (uint32_t)(&Default_handler),
-    (uint32_t)(&Default_handler),
+    (uint32_t)(&__asm_os_switch_context),
     (uint32_t)(&Default_handler),
     (uint32_t)(&Default_handler),
     (uint32_t)(&Default_handler),
