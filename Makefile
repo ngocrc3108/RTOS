@@ -7,7 +7,7 @@ BUILD_DIR = build
 BUILD_OBJECT_DIR = $(BUILD_DIR)/object
 BUILD_OBJECT = $(addprefix $(BUILD_OBJECT_DIR)/, $(OBJECT))
 
-TARGET_NAME = main
+TARGET_NAME = main.elf
 TARGET = $(BUILD_DIR)/$(TARGET_NAME)
 VPATH=src
 
