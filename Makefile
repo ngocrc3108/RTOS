@@ -37,3 +37,6 @@ clean:
 
 flash:
 	/mnt/data/My_Document/Coding/flasher/build/flasher
+
+openocd:
+	openocd -f /usr/share/openocd/scripts/interface/stlink-v2.cfg -f /usr/share/openocd/scripts/target/stm32f1x.cfg
