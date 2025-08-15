@@ -7,6 +7,8 @@
 /* get symbol address (value) by &, the type here does not matter */
 extern void* __data_start_address;
 extern void* __data_size;
+extern void* __bss_start_address;
+extern void* __bss_size;
 
 int main();
 static void Default_handler(void);
@@ -109,6 +111,11 @@ void Reset_handler()
     for(uint64_t i = 0; i < (uint32_t)(&__data_size); i++)
     {
         ((uint8_t*)SRAM_START_ADDRESS)[i] = ((uint8_t*)&__data_start_address)[i];
+    }
+
+    for(uint64_t i = 0; i < (uint32_t)(&__bss_size); i++)
+    {
+        ((uint8_t*)&__bss_start_address)[i] = 0;
     }
 
     main();

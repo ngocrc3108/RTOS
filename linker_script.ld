@@ -24,6 +24,8 @@ SECTIONS
     __data_size = SIZEOF(.data);
     .bss : ALIGN(4)
     {
+        __bss_start_address = .;
         *(.bss)
     } > RAM
+    __bss_size = SIZEOF(.bss);
 }
