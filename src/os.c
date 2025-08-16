@@ -2,6 +2,7 @@
 #include "timer.h"
 #include "rcc.h"
 #include "system.h"
+#include "mem.h"
 
 #define OS_TIMER    TIM2
 
@@ -28,13 +29,16 @@ void os_add_task(uint32_t task_address, uint32_t stack_size)
 void os_start()
 {
     /* tasks' stacks are allocated on heap */
-    uint32_t stack_address = (uint32_t)&__heap_start_address;
     for(int i = 0; i < task_info_count; i++)
     {
-        stack_address += task_info[i].stack_size;
+        /* allocate (stack_size) bytes of memory on heap, then move stack address into the end of that memory since stack grows downward */
+        /* stack must be word aligned - Use of 0b1101 as a register specifier - armv7-M architecture reference manual */
+        const uint32_t aligned_stack_size = align_memory_size(task_info[i].stack_size);
+        const uint32_t stack_address = (uint32_t)malloc(aligned_stack_size) + aligned_stack_size;
+
         task_info[i].context.SP = stack_address - 8*4;
         /* Pushes xPSR, PC, r0, r1, r2, r3, r12, and LR on selected stack. */
-        /* since the stack grows downward, offsets are negative */
+        /* the stack grows downward */
         ((uint32_t*)task_info[i].context.SP)[7] = 0x01000000; // xPSR
         ((uint32_t*)task_info[i].context.SP)[6] = task_info[i].task_address & 0xfffffffe; // PC
         ((uint32_t*)task_info[i].context.SP)[5] = 0xFFFFFFF9; // LR
