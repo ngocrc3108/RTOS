@@ -48,10 +48,7 @@ void os_start()
         ((uint32_t*)task_info[i].context.SP)[1] = 0x00; // R1
         ((uint32_t*)task_info[i].context.SP)[0] = 0x00; // R0
 
-        task_info[i].context.BASEPRI = 0x00;
-        task_info[i].context.CONTROL = 0x00;
-        task_info[i].context.FAULTMASK = 0x00;
-        task_info[i].context.PRIMASK = 0x00;
+        task_info[i].context.LR_isr = 0xFFFFFFFD; // used for unstacking in exception return
     }
 
     current_task_index = 0;

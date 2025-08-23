@@ -14,10 +14,8 @@ typedef struct os_task_context_t
     uint32_t R9;
     uint32_t R10;
     uint32_t R11;
-    uint32_t PRIMASK;
-    uint32_t FAULTMASK;
-    uint32_t BASEPRI;
     uint32_t CONTROL;
+    uint32_t LR_isr; // used for unstacking in exception return
 } os_task_context_t;
 
 typedef struct os_task_t

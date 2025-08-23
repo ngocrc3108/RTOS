@@ -46,64 +46,20 @@ __asm_os_switch_context:
 	ldr	r0, .L2
 	ldr	r0, [r0]
 
-	str sp, [r0, #0]
-	str r4, [r0, #4]
-	str r5, [r0, #8]
-	str r6, [r0, #12]
-	str r7, [r0, #16]
-	str r8, [r0, #20]
-	str r9, [r0, #24]
-	str r10, [r0, #28]
-	str r11, [r0, #32]
+	@ store PSP, R4-R11, CONTROL
+	MRS	r3, PSP
+	MRS r12, CONTROL
+	STMIA r0, {r3-r12, lr}
 
-	@ special registers
-	MRS r1, PRIMASK
-	str r1, [r0, #36]
-	MRS r1, FAULTMASK
-	str r1, [r0, #40]
-	MRS r1, BASEPRI
-	str r1, [r0, #44]
-	MRS r1, CONTROL
-	str r1, [r0, #48]
-
-	push	{r1, lr}
 	@ call C function to update current_context
 	@ result is stored in R0
 	bl	os_find_next_task
-	pop		{r1, lr}
 
-	@ reload current_context address into r0
-	@ ldr	r0, .L2
-	@ ldr	r0, [r0]
-	nop
-	nop
-	nop
-	nop
-
-	@ privileged
-	orr r1, #1
-	MRS r1, CONTROL
-
-	ldr sp, [r0, #0]
-	isb
-	ldr r4, [r0, #4]
-	ldr r5, [r0, #8]
-	ldr r6, [r0, #12]
-	ldr r7, [r0, #16]
-	ldr r8, [r0, #20]
-	ldr r9, [r0, #24]
-	ldr r10, [r0, #28]
-	ldr r11, [r0, #32]
-
-	@ special registers
-	ldr r1, [r0, #36]
-	MSR PRIMASK, r1
-	ldr r1, [r0, #40]
-	MSR FAULTMASK, r1
-	ldr r1, [r0, #44]
-	MSR BASEPRI, r1
-	ldr r1, [r0, #48]
-	MSR CONTROL, r1
+	@ restore PSP, R4-R11, CONTROL
+	LDMIA r0, {r3-r12, lr}
+	MSR	PSP, r3
+	ISB
+	MSR CONTROL, r12
 
 	bx lr
 	@ Pops PC, xPSR, r0, r1, r2, r3, r12 and LR from stack selected by EXC_RETURN and adjusts SP, if not pre-empted.
@@ -126,8 +82,13 @@ __asm_os_start:
 
 	push	{lr}
 
-	mov	sp, r1
-	nop
+	MSR	PSP, r1
+	MRS r3, CONTROL
+	mov	r2, #2
+	orr r3, r3, r2
+	MSR	CONTROL, r3
+	ISB
+
 	blx	r0
 
 	pop		{pc}
