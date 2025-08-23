@@ -5,7 +5,7 @@
 
 #define RCC_BASE 0x40021000
 
-typedef struct {
+typedef struct rcc_t {
     uint32_t CR;
     uint32_t CFGR;
     uint32_t CIR;

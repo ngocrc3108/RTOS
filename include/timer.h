@@ -5,7 +5,7 @@
 
 #define TIM2_BASE 0x40000000
 
-typedef struct {
+typedef struct timer_register_t {
     uint32_t CR1;
     uint32_t CR2;
     uint32_t SMCR;
