@@ -6,15 +6,20 @@
 int main();
 static void Default_handler(void);
 static void Reset_handler() __attribute__((section (".reset_handler")));
+static void NMI_handler(void);
+static void HardFault_handler(void);
+static void MemFault_handler(void);
+static void BusFault_handler(void);
+static void UsageFault_handler(void);
 
 uint32_t vector_table[] __attribute__((section (".vector_table"))) = {
     (SRAM_START_ADDRESS + SRAM_SIZE),
     (uint32_t)(&Reset_handler),
-    (uint32_t)(&Default_handler),
-    (uint32_t)(&Default_handler),
-    (uint32_t)(&Default_handler),
-    (uint32_t)(&Default_handler),
-    (uint32_t)(&Default_handler),
+    (uint32_t)(&NMI_handler),
+    (uint32_t)(&HardFault_handler),
+    (uint32_t)(&MemFault_handler),
+    (uint32_t)(&BusFault_handler),
+    (uint32_t)(&UsageFault_handler),
     0,
     0,
     0,
@@ -112,4 +117,29 @@ void Reset_handler()
     }
 
     main();
+}
+
+void NMI_handler(void)
+{
+    while(1);
+}
+
+void HardFault_handler(void)
+{
+    while(1);
+}
+
+void MemFault_handler(void)
+{
+    while(1);
+}
+
+void BusFault_handler(void)
+{
+    while(1);
+}
+
+void UsageFault_handler(void)
+{
+    while(1);
 }
