@@ -3,7 +3,8 @@
 
 #include <stdint.h>
 
-typedef struct os_task_context_t {
+typedef struct os_task_context_t
+{
     uint32_t SP;
     uint32_t R4;
     uint32_t R5;
@@ -19,7 +20,8 @@ typedef struct os_task_context_t {
     uint32_t CONTROL;
 } os_task_context_t;
 
-typedef struct os_task_t {
+typedef struct os_task_t
+{
     uint32_t task_address; 
     uint32_t stack_size;
     os_task_context_t context;
