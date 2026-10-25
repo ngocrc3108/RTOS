@@ -22,9 +22,8 @@ LDFLAGS = -nostdlib -T linker_script.ld -Wl,-Map=$(MEM_MAP)
 all: $(OBJECT)
 	$(CC) $(LDFLAGS) -o $(TARGET) $(BUILD_OBJECT)
 	$(OBJ_COPY) -O binary $(TARGET) $(BINARY_FILE)
-	rm -f $(DEASSEMBLE) $(SECTION_HEADER)
-	$(OBJ_DUMP) -D $(TARGET) >> $(DEASSEMBLE)
-	$(OBJ_DUMP) -x $(TARGET) >> $(SECTION_HEADER)
+	$(OBJ_DUMP) -D $(TARGET) > $(DEASSEMBLE)
+	$(OBJ_DUMP) -x $(TARGET) > $(SECTION_HEADER)
 
 asm_os.o: asm_os.s
 	$(CC) $(CFLAGS) $< -o $(BUILD_OBJECT_DIR)/$@
