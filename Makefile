@@ -2,7 +2,15 @@ CC = arm-none-eabi-gcc
 OBJ_COPY = arm-none-eabi-objcopy
 OBJ_DUMP = arm-none-eabi-objdump
 
-OBJECT = main.o system.o gpio.o timer.o mem.o os.o asm_os.o
+OBJECT = \
+	main.o \
+	system.o \
+	gpio.o \
+	timer.o \
+	mem.o \
+	os.o \
+	asm_os.o
+
 BUILD_DIR = build
 BUILD_OBJECT_DIR = $(BUILD_DIR)/object
 BUILD_OBJECT = $(addprefix $(BUILD_OBJECT_DIR)/, $(OBJECT))
