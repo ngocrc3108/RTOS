@@ -21,7 +21,7 @@ VPATH=src
 
 SECTION_HEADER = $(BUILD_DIR)/header
 DEASSEMBLE = $(BUILD_DIR)/deassemble
-MEM_MAP = $(BUILD_DIR)/map
+MEM_MAP = $(BUILD_DIR)/main.map
 BINARY_FILE = $(BUILD_DIR)/main.bin
 
 CFLAGS = -c -mcpu=cortex-m3 -mthumb -std=gnu11 -O0 -Iinclude
