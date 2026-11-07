@@ -28,15 +28,18 @@ CFLAGS = -c -mcpu=cortex-m3 -mthumb -std=gnu11 -O0 -Iinclude
 LDFLAGS = -nostdlib -T linker_script.ld -Wl,-Map=$(MEM_MAP)
 
 all: $(OBJECT)
+	mkdir -p $(BUILD_DIR)
 	$(CC) $(LDFLAGS) -o $(TARGET) $(BUILD_OBJECT)
 	$(OBJ_COPY) -O binary $(TARGET) $(BINARY_FILE)
 	$(OBJ_DUMP) -D $(TARGET) > $(DEASSEMBLE)
 	$(OBJ_DUMP) -x $(TARGET) > $(SECTION_HEADER)
 
 asm_os.o: asm_os.s
+	mkdir -p $(BUILD_OBJECT_DIR)
 	$(CC) $(CFLAGS) $< -o $(BUILD_OBJECT_DIR)/$@
 
 %.o: %.c
+	mkdir -p $(BUILD_OBJECT_DIR)
 	$(CC) $(CFLAGS) $< -o $(BUILD_OBJECT_DIR)/$@
 
 clean:
