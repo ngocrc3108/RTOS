@@ -2,7 +2,15 @@ CC = arm-none-eabi-gcc
 OBJ_COPY = arm-none-eabi-objcopy
 OBJ_DUMP = arm-none-eabi-objdump
 
-OBJECT = main.o system.o gpio.o timer.o mem.o os.o asm_os.o
+OBJECT = \
+	main.o \
+	system.o \
+	gpio.o \
+	timer.o \
+	mem.o \
+	os.o \
+	asm_os.o
+
 BUILD_DIR = build
 BUILD_OBJECT_DIR = $(BUILD_DIR)/object
 BUILD_OBJECT = $(addprefix $(BUILD_OBJECT_DIR)/, $(OBJECT))
@@ -13,23 +21,25 @@ VPATH=src
 
 SECTION_HEADER = $(BUILD_DIR)/header
 DEASSEMBLE = $(BUILD_DIR)/deassemble
-MEM_MAP = $(BUILD_DIR)/map
+MEM_MAP = $(BUILD_DIR)/main.map
 BINARY_FILE = $(BUILD_DIR)/main.bin
 
 CFLAGS = -c -mcpu=cortex-m3 -mthumb -std=gnu11 -O0 -Iinclude
 LDFLAGS = -nostdlib -T linker_script.ld -Wl,-Map=$(MEM_MAP)
 
 all: $(OBJECT)
+	mkdir -p $(BUILD_DIR)
 	$(CC) $(LDFLAGS) -o $(TARGET) $(BUILD_OBJECT)
 	$(OBJ_COPY) -O binary $(TARGET) $(BINARY_FILE)
-	rm -f $(DEASSEMBLE) $(SECTION_HEADER)
-	$(OBJ_DUMP) -D $(TARGET) >> $(DEASSEMBLE)
-	$(OBJ_DUMP) -x $(TARGET) >> $(SECTION_HEADER)
+	$(OBJ_DUMP) -D $(TARGET) > $(DEASSEMBLE)
+	$(OBJ_DUMP) -x $(TARGET) > $(SECTION_HEADER)
 
 asm_os.o: asm_os.s
+	mkdir -p $(BUILD_OBJECT_DIR)
 	$(CC) $(CFLAGS) $< -o $(BUILD_OBJECT_DIR)/$@
 
 %.o: %.c
+	mkdir -p $(BUILD_OBJECT_DIR)
 	$(CC) $(CFLAGS) $< -o $(BUILD_OBJECT_DIR)/$@
 
 clean:
